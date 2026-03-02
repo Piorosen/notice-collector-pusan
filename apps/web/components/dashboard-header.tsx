@@ -22,6 +22,7 @@ export default function DashboardHeader() {
   const pathname = usePathname();
   const [now, setNow] = useState<Date | null>(null);
   const [lastSync, setLastSync] = useState<string>("-");
+  const [weatherLabel, setWeatherLabel] = useState<string>("부산 날씨 불러오는 중...");
 
   useEffect(() => {
     setNow(new Date());
@@ -46,6 +47,32 @@ export default function DashboardHeader() {
 
     load();
     const timer = setInterval(load, 60000);
+    return () => {
+      mounted = false;
+      clearInterval(timer);
+    };
+  }, []);
+
+  useEffect(() => {
+    let mounted = true;
+    const loadWeather = async () => {
+      try {
+        const res = await fetch("/api/weather", { cache: "no-store" });
+        if (!res.ok) return;
+        const json = await res.json();
+        if (!mounted) return;
+        const temp =
+          typeof json?.temperature === "number"
+            ? `${Math.round(json.temperature * 10) / 10}${json?.temperature_unit || "°C"}`
+            : "-";
+        setWeatherLabel(`${json?.location || "부산"} ${temp} · ${json?.weather || "날씨 정보 없음"}`);
+      } catch {
+        if (mounted) setWeatherLabel("부산 날씨 정보 없음");
+      }
+    };
+
+    loadWeather();
+    const timer = setInterval(loadWeather, 10 * 60 * 1000);
     return () => {
       mounted = false;
       clearInterval(timer);
@@ -87,7 +114,7 @@ export default function DashboardHeader() {
         </div>
 
         <div className="ml-auto rounded-full bg-white/85 px-3 py-1 text-xs font-medium text-slate-700 sm:text-sm">
-          날씨 Placeholder · 최근 동기화 {lastSync}
+          {weatherLabel} · 최근 동기화 {lastSync}
         </div>
       </div>
     </header>
