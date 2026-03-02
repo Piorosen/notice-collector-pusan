@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+:root {
+  --bg-start: #edf4ff;
+  --bg-end: #f7fbff;
+  --panel: #f3f7fc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Pretendard", "Noto Sans KR", system-ui, sans-serif;
+  background: linear-gradient(180deg, var(--bg-start) 0%, var(--bg-end) 100%);
+  color: #0f172a;
+}
+
+a {
+  color: inherit;
+}
+
+.notice-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+}
