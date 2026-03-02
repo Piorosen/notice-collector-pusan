@@ -1,0 +1,6 @@
+services:
+  web:
+    command: /bin/sh -c "sleep infinity"
+    volumes:
+      - .:/workspace:cached
+    working_dir: /workspace

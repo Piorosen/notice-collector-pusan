@@ -1,0 +1,27 @@
+{
+  "name": "automatic-notice",
+  "dockerComposeFile": [
+    "../docker-compose.yml",
+    "docker-compose.devcontainer.yml"
+  ],
+  "service": "web",
+  "workspaceFolder": "/workspace",
+  "runServices": [
+    "db",
+    "redis",
+    "ingestor",
+    "web"
+  ],
+  "shutdownAction": "stopCompose",
+  "postCreateCommand": "cd apps/web && npm install",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "ms-python.python"
+      ]
+    }
+  }
+}
